@@ -27,12 +27,13 @@ let dangerRange = 50;
 
 //OBJECTS======================================================================
 
-//Player ship
+//#############################Player ship#############################
 let playerShip = {
   health: 100,
   xposition: 0,
   yposition: screenYsize - 80,
   avatar: "playerShip.png",
+  //Initial draw
   initialDraw: function() {
     $("#game-window").append('<img id="playerShip"></img>');
     $("#playerShip").attr("src", `${playerShip.avatar}`);
@@ -49,10 +50,12 @@ let playerShip = {
     document.getElementById("playerypositionIndicator").innerHTML =
       playerShip.yposition;
   },
+  //Redraw player ship
   redraw: function() {
     $("#game-window").append('<img id="playerShip"></img>');
     $("#playerShip").attr("src", `${playerShip.avatar}`);
   },
+  //Update health
   updateHealth: function() {
     document.getElementById("healthIndicator").innerHTML = playerShip.health;
     if (playerShip.health < 25) {
@@ -62,12 +65,13 @@ let playerShip = {
   }
 };
 
-//Asteroid
+//#############################Asteroid#############################
 let asteroid = {
   xposition: 0,
   yposition: 0,
   avatar: "asteroid.png",
   defaultStartYposition: 30,
+  //Initial draw
   initialDraw: function() {
     $("#game-window").append('<img id="asteroid"></img>');
     $("#asteroid").attr("src", `${asteroid.avatar}`);
@@ -76,6 +80,7 @@ let asteroid = {
     $("#asteroid").css({ width: "50px" });
     $("#asteroid").css({ position: "absolute" });
   },
+  //Move asteroid
   move: function() {
     if (asteroid.yposition < screenYsize + 50) {
       asteroid.yposition += asteroidSpeed;
@@ -88,6 +93,7 @@ let asteroid = {
       asteroid.reset();
     }
   },
+  //Reset asteroid
   reset: function() {
     $("#asteroid").css({ top: "0px" });
     asteroid.yposition = asteroid.defaultStartYposition;
@@ -105,10 +111,44 @@ let asteroid = {
   }
 };
 
-//Game session
+//#############################Game session#############################
 let gameInstance = {
   over: false
 };
+
+//#############################Game window#############################
+let gameWindow = {
+  //User HUD
+  renderUserHUD: function() {
+    $("#game-window").append(
+      '<strong class="HUD">Health:</strong><p id="healthIndicator" class="HUD">0</p>'
+    );
+    $("#game-window").append(
+      '<strong class="HUD">Score:</strong><p id="scoreIndicator" class="HUD">0</p>'
+    );
+  },
+  //Game Over screen
+  renderGameOverScreen: function() {
+    $("#game-window").empty();
+    $("#game-window").css({ "text-align": "center" });
+  
+    $("#game-window").append(
+      '<h2 id="gameOverText" style="color: white; display: none; margin-top: 150px" >Game Over</h2>'
+    );
+    $("#gameOverText").css({ "font-size": "90px" });
+    $("#gameOverText").fadeIn(1500);
+  
+    $("#game-window").append(
+      `<h5 id="gameOverScore" style="color: white; display: none">Score: ${score}</h5>`
+    );
+    $("#gameOverScore").fadeIn(1500);
+  
+    $("#game-window").append(
+      `<h5 id="spaceToRestart" style="color: white; display: none">Press SPACE to Restart</h5>`
+    );
+    $("#spaceToRestart").fadeIn(1500);
+  }
+}
 
 //FUNCTIONS - STARTUP============================================================
 
@@ -130,16 +170,6 @@ function timeKeeper() {
   }
 }
 
-//Render the HUD for the first time
-function renderUserHUD() {
-  $("#game-window").append(
-    '<strong class="HUD">Health:</strong><p id="healthIndicator" class="HUD">0</p>'
-  );
-  $("#game-window").append(
-    '<strong class="HUD">Score:</strong><p id="scoreIndicator" class="HUD">0</p>'
-  );
-}
-
 //FUNCTIONS - PERPETUAL===================================================================
 
 //Determine if the player has collided with the asteroid
@@ -150,14 +180,12 @@ function checkCollision() {
   let nearOnYaxis =
     asteroid.yposition - dangerRange < playerShip.yposition &&
     playerShip.yposition < asteroid.yposition + dangerRange;
-  console.log(nearOnXaxis);
-  console.log(nearOnYaxis);
   if (nearOnXaxis && nearOnYaxis) {
     playerShip.health = playerShip.health - damageFromAsteroidCollision;
 
     if (playerShip.health <= 0) {
       gameInstance.over = true;
-      renderGameOverScreen();
+      gameWindow.renderGameOverScreen();
       return;
     } else {
       $("#game-window").append(
@@ -172,30 +200,6 @@ function checkCollision() {
       }, 1100);
     }
   }
-}
-
-//FUNCTIONS - DOM OVERHAUL===================================================================
-
-//Show Game Over to the player
-function renderGameOverScreen() {
-  $("#game-window").empty();
-  $("#game-window").css({ "text-align": "center" });
-
-  $("#game-window").append(
-    '<h2 id="gameOverText" style="color: white; display: none; margin-top: 150px" >Game Over</h2>'
-  );
-  $("#gameOverText").css({ "font-size": "90px" });
-  $("#gameOverText").fadeIn(1500);
-
-  $("#game-window").append(
-    `<h5 id="gameOverScore" style="color: white; display: none">Score: ${score}</h5>`
-  );
-  $("#gameOverScore").fadeIn(1500);
-
-  $("#game-window").append(
-    `<h5 id="spaceToRestart" style="color: white; display: none">Press SPACE to Restart</h5>`
-  );
-  $("#spaceToRestart").fadeIn(1500);
 }
 
 //FUNCTIONS DEBUGGING===================================================================
@@ -237,7 +241,7 @@ function checkKey(e) {
 //RUN PROGRAM==================================================================
 
 //On startup
-renderUserHUD();
+gameWindow.renderUserHUD();
 playerShip.initialDraw();
 asteroid.initialDraw();
 asteroid.reset();
