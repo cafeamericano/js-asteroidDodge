@@ -48,12 +48,21 @@
     </head>
 
     <body class="bg-dark" style="display: flex; justify-content: center; align-items: center">
+        <div id="leftOfConsole">
+            <div style="height: 480px; width: 150px; background-color: teal"></div>
+            <!-- <img src="handle.png"> -->
+        </div>
         <div id="console-frame" >
-                <div id="game-window" style="overflow: hidden"></div>
+            <div id="game-window" style="overflow: hidden"></div>
+        </div>
+        <div id="rightOfConsole">
+            <div style="height: 480px; width: 150px; background-color: teal"></div>
+            <!-- <img src="handle.png"> -->
         </div>
 
         <div id="outsideOfConsole" style="position: fixed; top: 0px; left: 0px">
             <h1 class="text-left text-light">小惑星ダッジ (Asteroid Dodge)</h1>
+            <br>
             <strong>Health:</strong><p id="healthIndicator">0</p>
             <strong>Player X-Position:</strong><p id="playerxpositionIndicator">0</p>
             <strong>Player Y-Position:</strong><p id="playerypositionIndicator">0</p>
