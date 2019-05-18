@@ -81,7 +81,6 @@ function checkKey(e) {
   }
 
   showPlayerYPosition();
-  asteroidMove();
   setTimeout(function() {
     checkCollision();
   }, 1000);
@@ -96,6 +95,7 @@ function myTimer() {
 }
 
 function timeKeeper() {
+  asteroidMove();
   secondCounter += 1;
   document.getElementById("elapsedTimeIndicator").innerHTML = secondCounter;
   score = secondCounter * 10;
@@ -133,7 +133,7 @@ function renderGameOverScreen() {
 function asteroidMove() {
   if (asteroid.yposition < screenYsize + 50) {
     $("#asteroid").animate({ top: moveDownAmount }, 100);
-    asteroid.yposition += 50;
+    asteroid.yposition += 1;
     document.getElementById("asteroidypositionIndicator").innerHTML =
       asteroid.yposition;
   } else {
@@ -187,6 +187,7 @@ function asteroidReset() {
   let randomAsteroidxposition = Math.floor(
     Math.random() * screenXsize - dangerRange
   );
+
   $("#asteroid").animate({ left: randomAsteroidxposition + "px" }, 0);
   asteroid.xposition = randomAsteroidxposition;
   document.getElementById("asteroidxpositionIndicator").innerHTML =
