@@ -30,7 +30,7 @@ let dangerRange = 50;
 //#############################Player ship#############################
 let playerShip = {
   health: 100,
-  xposition: 0,
+  xposition: 300,
   yposition: screenYsize - 80,
   avatar: "playerShip.png",
   //Initial draw
@@ -42,7 +42,7 @@ let playerShip = {
     $("#playerShip").css({ width: "50px" });
     $("#playerShip").css({ position: "absolute" });
 
-    $("#playerShip").css({ left: "0px" });
+    $("#playerShip").css({ left: playerShip.xposition });
     $("#playerShip").css({ top: playerShip.yposition });
 
     document.getElementById("playerxpositionIndicator").innerHTML =
@@ -54,6 +54,19 @@ let playerShip = {
   redraw: function() {
     $("#game-window").append('<img id="playerShip"></img>');
     $("#playerShip").attr("src", `${playerShip.avatar}`);
+  },
+  //Move spaceship
+  moveLeft: function() {
+    $("#playerShip").css({ left: moveLeftAmount });
+    playerShip.xposition -= spaceShipSpeed;
+    document.getElementById("playerxpositionIndicator").innerHTML =
+      playerShip.xposition;  
+  },
+  moveRight: function() {
+    $("#playerShip").css({ left: moveRightAmount });
+      playerShip.xposition += spaceShipSpeed;
+      document.getElementById("playerxpositionIndicator").innerHTML =
+        playerShip.xposition;
   },
   //Update health
   updateHealth: function() {
@@ -225,17 +238,11 @@ let gameWindow = {
 function checkKey(e) {
   if (e.keyCode == "37") {
     if (playerShip.xposition > 0) {
-      $("#playerShip").css({ left: moveLeftAmount });
-      playerShip.xposition -= spaceShipSpeed;
-      document.getElementById("playerxpositionIndicator").innerHTML =
-        playerShip.xposition;
+      playerShip.moveLeft();
     }
   } else if (e.keyCode == "39") {
     if (playerShip.xposition < screenXsize) {
-      $("#playerShip").css({ left: moveRightAmount });
-      playerShip.xposition += spaceShipSpeed;
-      document.getElementById("playerxpositionIndicator").innerHTML =
-        playerShip.xposition;
+      playerShip.moveRight();
     }
   } else if (e.keyCode == "32") { //Space bar will reload window
     location.reload();
