@@ -1,29 +1,33 @@
 //GLOBAL VARIABLES=============================================
 
+//Screen size
 let screenXsize = 640;
 let screenXpixels = screenXsize + "px";
 let screenYsize = 480;
 let screenYpixels = screenYsize + "px";
 
+//Movement incrementation
 let moveLeftAmount = "-=50px";
 let moveRightAmount = "+=50px";
 let moveUpAmount = "-=50px";
 let moveDownAmount = "+=50px";
 
-let dangerRange = 50;
-let asteroidStartYposition = 30;
-
+//Sprite movement incrementation
 let spaceShipSpeed = 50;
 let asteroidSpeed = 20;
 
+//Score and time
 let score = 0;
 let highScore = 0;
-
 let secondCounter = 0;
+
+//Collision variables
 let damageFromAsteroidCollision = 30;
+let dangerRange = 50;
 
 //OBJECTS======================================================
 
+//Player ship
 let playerShip = {
   health: 100,
   xposition: 0,
@@ -31,17 +35,20 @@ let playerShip = {
   avatar: "playerShip.png"
 };
 
+//Asteroid
 let asteroid = {
   xposition: 0,
   yposition: 0,
-  avatar: "asteroid.png"
+  avatar: "asteroid.png",
+  defaultStartYposition: 30
 };
 
+//Game session
 let gameInstance = {
   over: false
 };
 
-//FUNCTIONS===================================================
+//FUNCTIONS STARTUP===================================================
 
 //Define what happens during the passage of time
 function timeKeeper() {
@@ -89,11 +96,6 @@ function initialDrawAsteroid() {
   $("#asteroid").css({ position: "absolute" });
 }
 
-function redrawShip() {
-  $("#game-window").append('<img id="playerShip"></img>');
-  $("#playerShip").attr("src", `${playerShip.avatar}`);
-}
-
 //Render the HUD for the first time
 function renderUserHUD() {
   $("#game-window").append(
@@ -103,6 +105,8 @@ function renderUserHUD() {
     '<strong class="HUD">Score:</strong><p id="scoreIndicator" class="HUD">0</p>'
   );
 }
+
+//FUNCTIONS PERPETUAL===================================================
 
 //Listen for keyboard inputs from the user
 function checkKey(e) {
@@ -149,7 +153,7 @@ function asteroidMove() {
 //Reset the asteroid
 function asteroidReset() {
   $("#asteroid").css({ top: "0px" });
-  asteroid.yposition = asteroidStartYposition;
+  asteroid.yposition = asteroid.defaultStartYposition;
   document.getElementById("asteroidypositionIndicator").innerHTML =
     asteroid.yposition;
 
@@ -194,6 +198,12 @@ function updateHealthIndicator() {
   }
 }
 
+//Redraw the ship
+function redrawShip() {
+  $("#game-window").append('<img id="playerShip"></img>');
+  $("#playerShip").attr("src", `${playerShip.avatar}`);
+}
+
 //Determine if the player has collided with the asteroid
 function checkCollision() {
   let nearOnXaxis =
@@ -226,7 +236,7 @@ function checkCollision() {
   }
 }
 
-//DEBUGGING FUNCTIONS===================================================
+//FUNCTIONS DEBUGGING===================================================
 
 //Show the player's position on the y axis
 function showPlayerYPosition() {
@@ -234,10 +244,9 @@ function showPlayerYPosition() {
     playerShip.yposition;
 }
 
-//ON STARTUP==================================================
+//PERFORM ON STARTUP==================================================
 
-//Constantly listen for key input
-document.onkeydown = checkKey;
+document.onkeydown = checkKey; //Constantly listen for key input
 
 renderUserHUD();
 initialDrawPlayerShip();
