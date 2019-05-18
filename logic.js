@@ -81,11 +81,18 @@ function checkKey(e) {
   }
 
   showPlayerYPosition();
-  timeKeeper();
   asteroidMove();
   setTimeout(function() {
     checkCollision();
   }, 1000);
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+setInterval(myTimer, 100);
+
+function myTimer() {
+  timeKeeper();
 }
 
 function timeKeeper() {
@@ -95,6 +102,8 @@ function timeKeeper() {
   document.getElementById("scoreIndicator").innerHTML = score;
   updateHealthIndicator();
 }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function renderUserHUD() {
   $("#game-window").append(
