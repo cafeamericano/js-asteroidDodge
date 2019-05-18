@@ -7,18 +7,21 @@ let moveLeftAmount = "-=50px";
 let moveRightAmount = "+=50px";
 let moveUpAmount = "-=50px";
 let moveDownAmount = "+=50px";
-let dangerRange = 35;
+
+let dangerRange = 40;
 let asteroidStartYposition = 30;
+
 let spaceShipSpeed = 50;
+let asteroidSpeed = 20;
 
 let score = 0;
 
 let secondCounter = 0;
-let damageFromAsteroidCollision = 20;
+let damageFromAsteroidCollision = 30;
 
 let playerShip = {
   health: 10,
-  xposition: screenXsize / 2,
+  xposition: 0,
   yposition: screenYsize - 80
 };
 
@@ -26,6 +29,10 @@ let asteroid = {
   xposition: 0,
   yposition: 0
 };
+
+let gameInstance = {
+    over: false
+}
 
 function initialDrawPlayerShip() {
   $("#game-window").append('<img id="playerShip"></img>');
@@ -35,7 +42,8 @@ function initialDrawPlayerShip() {
   $("#playerShip").css({ width: "50px" });
   $("#playerShip").css({ position: "absolute" });
 
-  $("#playerShip").css({ left: playerShip.xposition });
+  //$("#playerShip").css({ left: playerShip.xposition });
+  $("#playerShip").css({ left: '0px' });
   $("#playerShip").css({ top: playerShip.yposition });
 
   document.getElementById("playerxpositionIndicator").innerHTML =
@@ -62,18 +70,19 @@ renderUserHUD();
 updateHealthIndicator();
 
 function checkKey(e) {
+    
   e = e || window.event;
 
   if (e.keyCode == "37") {
     if (playerShip.xposition > 0) {
-      $("#playerShip").animate({ left: moveLeftAmount }, 100);
+      $("#playerShip").css({ left: moveLeftAmount });
       playerShip.xposition -= spaceShipSpeed;
       document.getElementById("playerxpositionIndicator").innerHTML =
         playerShip.xposition;
     }
   } else if (e.keyCode == "39") {
     if (playerShip.xposition < screenXsize) {
-      $("#playerShip").animate({ left: moveRightAmount }, 100);
+      $("#playerShip").css({ left: moveRightAmount });
       playerShip.xposition += spaceShipSpeed;
       document.getElementById("playerxpositionIndicator").innerHTML =
         playerShip.xposition;
@@ -87,7 +96,6 @@ function checkKey(e) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 setInterval(myTimer, 100);
 
 function myTimer() {
@@ -95,12 +103,12 @@ function myTimer() {
 }
 
 function timeKeeper() {
-  asteroidMove();
   secondCounter += 1;
   document.getElementById("elapsedTimeIndicator").innerHTML = secondCounter;
   score = secondCounter * 10;
   document.getElementById("scoreIndicator").innerHTML = score;
   updateHealthIndicator();
+  asteroidMove();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,8 +140,8 @@ function renderGameOverScreen() {
 
 function asteroidMove() {
   if (asteroid.yposition < screenYsize + 50) {
-    $("#asteroid").animate({ top: moveDownAmount }, 100);
-    asteroid.yposition += 1;
+    asteroid.yposition += asteroidSpeed;
+    $("#asteroid").css({ top: asteroid.yposition });
     document.getElementById("asteroidypositionIndicator").innerHTML =
       asteroid.yposition;
   } else {
@@ -162,7 +170,9 @@ function checkCollision() {
   if (nearOnXaxis && nearOnYaxis) {
     playerShip.health = playerShip.health - damageFromAsteroidCollision;
     if (playerShip.health <= 0) {
+        gameInstance.over = true;
       renderGameOverScreen();
+      return
     } else {
       $("#game-window").append(
         `<h6 id="crashNotificationPopUp" style="color: white; position: absolute; top: ${playerShip.yposition +
@@ -179,16 +189,15 @@ function checkCollision() {
 }
 
 function asteroidReset() {
-  $("#asteroid").animate({ top: "0px" }, 0);
+  $("#asteroid").css({ top: "0px" });
   asteroid.yposition = asteroidStartYposition;
   document.getElementById("asteroidypositionIndicator").innerHTML =
     asteroid.yposition;
 
   let randomAsteroidxposition = Math.floor(
-    Math.random() * screenXsize - dangerRange
+    Math.random() * screenXsize
   );
-
-  $("#asteroid").animate({ left: randomAsteroidxposition + "px" }, 0);
+  $("#asteroid").css({ left: randomAsteroidxposition + "px" });
   asteroid.xposition = randomAsteroidxposition;
   document.getElementById("asteroidxpositionIndicator").innerHTML =
     asteroid.xposition;
