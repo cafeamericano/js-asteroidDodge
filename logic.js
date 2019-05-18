@@ -121,6 +121,7 @@ let gameInstance = {
     asteroid.initialDraw();
     asteroid.reset();
     playerShip.updateHealth();
+    setInterval(gameInstance.makeTimePass, 20);
   },
   //Make time pass
   makeTimePass: function() {
@@ -172,6 +173,20 @@ let gameInstance = {
 
 //#############################Game window#############################
 let gameWindow = {
+  //Active session
+  renderStartScreen: function() {
+    $("#game-window").empty();
+    $("#game-window").append(
+      '<h2 id="startScreen" style="color: white; margin-top: 150px; text-align: center" >Start New Game?</h2>'
+    );
+    $("#game-window").append(
+      '<h4 id="startScreenPressEnter" style="color: white; text-align: center" >Press ENTER to Begin</h4>'
+    );
+  },
+  renderActiveGame: function() {
+    $("#game-window").empty();
+    gameInstance.startNewInstance();
+  },
   //User HUD
   renderUserHUD: function() {
     $("#game-window").append(
@@ -204,7 +219,7 @@ let gameWindow = {
   }
 };
 
-//FUNCTIONS USER INPUT===================================================================
+//USER INPUT===================================================================
 
 //Listen for keyboard inputs from the user
 function checkKey(e) {
@@ -222,16 +237,19 @@ function checkKey(e) {
       document.getElementById("playerxpositionIndicator").innerHTML =
         playerShip.xposition;
     }
-  } else if (e.keyCode == "32") {
+  } else if (e.keyCode == "32") { //Space bar will reload window
     location.reload();
+  } else if (e.keyCode == "13") { //Enter button will start game
+    $("#game-window").empty();
+    gameWindow.renderActiveGame();
   }
 };
 
 //RUN PROGRAM==================================================================
 
 //On startup
-gameInstance.startNewInstance();
+gameWindow.renderStartScreen();
 
 //Reoccuring
 document.onkeydown = checkKey; //Constantly listen for key input
-setInterval(gameInstance.makeTimePass, 20);
+
