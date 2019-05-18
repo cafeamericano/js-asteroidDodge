@@ -25,13 +25,6 @@
                 position: relative;
                 z-index: 0
             }
-            #plane {
-                color: white;
-                position: absolute;
-                z-index: 1;
-                width: 50px;
-                text-align: center;
-            }
             #asteroid {
                 position: absolute;
             }
@@ -41,27 +34,25 @@
             p, strong {
                 display: block;
                 line-height: 1.3rem;
-                color: white
+                color: black
             }
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     </head>
 
-    <body class="bg-dark" style="display: flex; justify-content: center; align-items: center">
+    <body class="bg-light" style="display: flex; justify-content: center; align-items: center">
         <div id="leftOfConsole">
-            <div style="height: 480px; width: 150px; background-color: teal"></div>
-            <!-- <img src="handle.png"> -->
+            <img src="lefthandle.png">
         </div>
         <div id="console-frame" >
             <div id="game-window" style="overflow: hidden"></div>
         </div>
         <div id="rightOfConsole">
-            <div style="height: 480px; width: 150px; background-color: teal"></div>
-            <!-- <img src="handle.png"> -->
+            <img src="righthandle.png">
         </div>
 
-        <div id="outsideOfConsole" style="position: fixed; top: 0px; left: 0px">
-            <h1 class="text-left text-light">小惑星ダッジ (Asteroid Dodge)</h1>
+        <div id="outsideOfConsole" class="p-3" style="position: fixed; top: 0px; left: 0px">
+            <h1 class="text-left text-dark">小惑星ダッジ (Asteroid Dodge)</h1>
             <br>
             <strong>Player X-Position:</strong><p id="playerxpositionIndicator">0</p>
             <strong>Player Y-Position:</strong><p id="playerypositionIndicator">0</p>
