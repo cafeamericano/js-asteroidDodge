@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <style>
+            h1 {
+                color: black;
+                text-align: center;
+                width: 640px;
+            }
+            #game-window {
+                height: 480px;
+                width: 640px;
+                background-image: url('starfield.png');
+                position: relative;
+                z-index: -1
+            }
+            #plane {
+                color: white;
+                position: absolute;
+                z-index: 1;
+                width: 50px;
+                text-align: center;
+            }
+            #asteroid {
+                position: absolute;
+            }
+            .red-bg{
+                background: red;
+            }
+            p {
+                display: block;
+                line-height: 0.3rem
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <div id="game-window" style="overflow: hidden">
+            <!-- <img id="asteroid" src="asteroid.png" height="50px" width="50px"> -->
+            <!-- <img id="plane" src="playerShip.png" height="50px" width="50px"> -->
+        </div>
+        <div>
+            <strong>Health:</strong><p id="healthIndicator">0</p>
+            <strong>Player X-Position:</strong><p id="playerxpositionIndicator">0</p>
+            <strong>Player Y-Position:</strong><p id="playerypositionIndicator">0</p>
+            <strong>Asteroid X-Position:</strong><p id="asteroidxpositionIndicator">0</p>
+            <strong>Asteroid Y-Position:</strong><p id="asteroidypositionIndicator">0</p>
+            <strong>Elapsed Time:</strong><p id="elapsedTimeIndicator">0</p>
+        </div>
+        <h1>小惑星ダッジ</h1>
+        <script src="logic.js" async defer></script>
+    </body>
+</html>
