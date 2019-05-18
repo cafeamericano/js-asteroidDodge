@@ -101,7 +101,7 @@ function renderGameOverScreen() {
     $("#gameOverText").css({ 'font-size': '90px' });
     $("#gameOverText").fadeIn(1500);
 
-    $('body').append('<a style="display: none" id="restartGameButton">Restart</a>');
+    $('#outsideOfConsole').append('<a style="display: none" id="restartGameButton">Restart</a>');
     $("#restartGameButton").fadeIn(1500);
     $("#restartGameButton").attr("href", "index.html");
 }
