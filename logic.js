@@ -15,6 +15,7 @@ let spaceShipSpeed = 50;
 let asteroidSpeed = 20;
 
 let score = 0;
+let highScore = 0;
 
 let secondCounter = 0;
 let damageFromAsteroidCollision = 30;
@@ -107,13 +108,20 @@ function checkKey(e) {
 setInterval(timeKeeper, 20);
 
 function timeKeeper() {
-  secondCounter += 1;
-  document.getElementById("elapsedTimeIndicator").innerHTML = secondCounter;
-  score = secondCounter * 10;
-  document.getElementById("scoreIndicator").innerHTML = score;
-  updateHealthIndicator();
-  checkCollision();
-  asteroidMove();
+  if (gameInstance.over === false) {
+    secondCounter += 1;
+    document.getElementById("elapsedTimeIndicator").innerHTML = secondCounter;
+    score = secondCounter * 10;
+    document.getElementById("scoreIndicator").innerHTML = score;
+    updateHealthIndicator();
+    checkCollision();
+    asteroidMove();
+  } else {
+    if (score > highScore) {
+      highScore = score;
+      document.getElementById("highScoreIndicator").innerHTML = highScore;
+    }
+  }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
