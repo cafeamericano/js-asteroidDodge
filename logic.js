@@ -20,14 +20,16 @@ let secondCounter = 0;
 let damageFromAsteroidCollision = 30;
 
 let playerShip = {
-  health: 10,
+  health: 100,
   xposition: 0,
-  yposition: screenYsize - 80
+  yposition: screenYsize - 80,
+  avatar: "playerShip.png"
 };
 
 let asteroid = {
   xposition: 0,
-  yposition: 0
+  yposition: 0,
+  avatar: "asteroid.png"
 };
 
 let gameInstance = {
@@ -36,7 +38,7 @@ let gameInstance = {
 
 function initialDrawPlayerShip() {
   $("#game-window").append('<img id="playerShip"></img>');
-  $("#playerShip").attr("src", "playerShip.png");
+  $("#playerShip").attr("src", `${playerShip.avatar}`);
 
   $("#playerShip").css({ height: "50px" });
   $("#playerShip").css({ width: "50px" });
@@ -52,9 +54,14 @@ function initialDrawPlayerShip() {
     playerShip.yposition;
 }
 
+function redrawShip() {
+  $("#game-window").append('<img id="playerShip"></img>');
+  $("#playerShip").attr("src", `${playerShip.avatar}`);
+}
+
 function initialDrawAsteroid() {
   $("#game-window").append('<img id="asteroid"></img>');
-  $("#asteroid").attr("src", "asteroid.png");
+  $("#asteroid").attr("src", `${asteroid.avatar}`);
 
   $("#asteroid").css({ height: "50px" });
   $("#asteroid").css({ width: "50px" });
@@ -97,7 +104,7 @@ function checkKey(e) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
-setInterval(timeKeeper, 50);
+setInterval(timeKeeper, 20);
 
 function timeKeeper() {
   secondCounter += 1;
@@ -113,10 +120,10 @@ function timeKeeper() {
 
 function renderUserHUD() {
   $("#game-window").append(
-    '<strong>Health:</strong><p id="healthIndicator">0</p>'
+    '<strong class="HUD">Health:</strong><p id="healthIndicator" class="HUD">0</p>'
   );
   $("#game-window").append(
-    '<strong>Score:</strong><p id="scoreIndicator">0</p>'
+    '<strong class="HUD">Score:</strong><p id="scoreIndicator" class="HUD">0</p>'
   );
 }
 
@@ -134,6 +141,11 @@ function renderGameOverScreen() {
     `<h5 id="gameOverScore" style="color: white; display: none">Score: ${score}</h5>`
   );
   $("#gameOverScore").fadeIn(1500);
+
+  $("#game-window").append(
+    `<h5 id="spaceToRestart" style="color: white; display: none">Press SPACE to Restart</h5>`
+  );
+  $("#spaceToRestart").fadeIn(1500);
 }
 
 function asteroidMove() {
@@ -151,6 +163,10 @@ function asteroidMove() {
 
 function updateHealthIndicator() {
   document.getElementById("healthIndicator").innerHTML = playerShip.health;
+  if (playerShip.health < 25) {
+    playerShip.avatar = "playerShipCritical.png";
+    redrawShip();
+  }
 }
 
 function showPlayerYPosition() {
@@ -169,6 +185,7 @@ function checkCollision() {
   console.log(nearOnYaxis);
   if (nearOnXaxis && nearOnYaxis) {
     playerShip.health = playerShip.health - damageFromAsteroidCollision;
+
     if (playerShip.health <= 0) {
       gameInstance.over = true;
       renderGameOverScreen();
