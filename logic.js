@@ -1,4 +1,4 @@
-//GLOBAL VARIABLES=============================================
+//GLOBAL VARIABLES=============================================================
 
 //Screen size
 let screenXsize = 640;
@@ -25,7 +25,7 @@ let secondCounter = 0;
 let damageFromAsteroidCollision = 30;
 let dangerRange = 50;
 
-//OBJECTS======================================================
+//OBJECTS======================================================================
 
 //Player ship
 let playerShip = {
@@ -48,7 +48,7 @@ let gameInstance = {
   over: false
 };
 
-//FUNCTIONS STARTUP===================================================
+//FUNCTIONS - STARTUP============================================================
 
 //Define what happens during the passage of time
 function timeKeeper() {
@@ -106,35 +106,7 @@ function renderUserHUD() {
   );
 }
 
-//FUNCTIONS PERPETUAL===================================================
-
-//Listen for keyboard inputs from the user
-function checkKey(e) {
-  e = e || window.event;
-
-  if (e.keyCode == "37") {
-    if (playerShip.xposition > 0) {
-      $("#playerShip").css({ left: moveLeftAmount });
-      playerShip.xposition -= spaceShipSpeed;
-      document.getElementById("playerxpositionIndicator").innerHTML =
-        playerShip.xposition;
-    }
-  } else if (e.keyCode == "39") {
-    if (playerShip.xposition < screenXsize) {
-      $("#playerShip").css({ left: moveRightAmount });
-      playerShip.xposition += spaceShipSpeed;
-      document.getElementById("playerxpositionIndicator").innerHTML =
-        playerShip.xposition;
-    }
-  } else if (e.keyCode == "32") {
-    location.reload();
-  }
-
-  showPlayerYPosition();
-  setTimeout(function() {
-    checkCollision();
-  }, 1000);
-}
+//FUNCTIONS - PERPETUAL===================================================================
 
 //Move the asteroid downwards
 function asteroidMove() {
@@ -165,28 +137,6 @@ function asteroidReset() {
 
   $("#asteroid").css({ left: asteroid.xposition });
   $("#asteroid").css({ top: asteroid.yposition });
-}
-
-//Clear the DOM, show Game Over to the player
-function renderGameOverScreen() {
-  $("#game-window").empty();
-  $("#game-window").css({ "text-align": "center" });
-
-  $("#game-window").append(
-    '<h2 id="gameOverText" style="color: white; display: none; margin-top: 150px" >Game Over</h2>'
-  );
-  $("#gameOverText").css({ "font-size": "90px" });
-  $("#gameOverText").fadeIn(1500);
-
-  $("#game-window").append(
-    `<h5 id="gameOverScore" style="color: white; display: none">Score: ${score}</h5>`
-  );
-  $("#gameOverScore").fadeIn(1500);
-
-  $("#game-window").append(
-    `<h5 id="spaceToRestart" style="color: white; display: none">Press SPACE to Restart</h5>`
-  );
-  $("#spaceToRestart").fadeIn(1500);
 }
 
 //Update the player's health indicator
@@ -236,7 +186,31 @@ function checkCollision() {
   }
 }
 
-//FUNCTIONS DEBUGGING===================================================
+//FUNCTIONS - DOM OVERHAUL===================================================================
+
+//Show Game Over to the player
+function renderGameOverScreen() {
+  $("#game-window").empty();
+  $("#game-window").css({ "text-align": "center" });
+
+  $("#game-window").append(
+    '<h2 id="gameOverText" style="color: white; display: none; margin-top: 150px" >Game Over</h2>'
+  );
+  $("#gameOverText").css({ "font-size": "90px" });
+  $("#gameOverText").fadeIn(1500);
+
+  $("#game-window").append(
+    `<h5 id="gameOverScore" style="color: white; display: none">Score: ${score}</h5>`
+  );
+  $("#gameOverScore").fadeIn(1500);
+
+  $("#game-window").append(
+    `<h5 id="spaceToRestart" style="color: white; display: none">Press SPACE to Restart</h5>`
+  );
+  $("#spaceToRestart").fadeIn(1500);
+}
+
+//FUNCTIONS DEBUGGING===================================================================
 
 //Show the player's position on the y axis
 function showPlayerYPosition() {
@@ -244,13 +218,43 @@ function showPlayerYPosition() {
     playerShip.yposition;
 }
 
-//PERFORM ON STARTUP==================================================
+//FUNCTIONS USER INPUT===================================================================
 
-document.onkeydown = checkKey; //Constantly listen for key input
+//Listen for keyboard inputs from the user
+function checkKey(e) {
+  if (e.keyCode == "37") {
+    if (playerShip.xposition > 0) {
+      $("#playerShip").css({ left: moveLeftAmount });
+      playerShip.xposition -= spaceShipSpeed;
+      document.getElementById("playerxpositionIndicator").innerHTML =
+        playerShip.xposition;
+    }
+  } else if (e.keyCode == "39") {
+    if (playerShip.xposition < screenXsize) {
+      $("#playerShip").css({ left: moveRightAmount });
+      playerShip.xposition += spaceShipSpeed;
+      document.getElementById("playerxpositionIndicator").innerHTML =
+        playerShip.xposition;
+    }
+  } else if (e.keyCode == "32") {
+    location.reload();
+  }
 
+  showPlayerYPosition();
+  setTimeout(function() {
+    checkCollision();
+  }, 1000);
+}
+
+//RUN PROGRAM==================================================================
+
+//On startup
 renderUserHUD();
 initialDrawPlayerShip();
 initialDrawAsteroid();
 asteroidReset();
 updateHealthIndicator();
+
+//Reoccuring
+document.onkeydown = checkKey; //Constantly listen for key input
 setInterval(timeKeeper, 20);
