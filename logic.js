@@ -55,13 +55,14 @@ let playerShip = {
     $("#game-window").append('<img id="playerShip"></img>');
     $("#playerShip").attr("src", `${playerShip.avatar}`);
   },
-  //Move spaceship
+  //Move spaceship left
   moveLeft: function() {
     $("#playerShip").css({ left: moveLeftAmount });
     playerShip.xposition -= spaceShipSpeed;
     document.getElementById("playerxpositionIndicator").innerHTML =
       playerShip.xposition;  
   },
+  //Move spacheship right
   moveRight: function() {
     $("#playerShip").css({ left: moveRightAmount });
       playerShip.xposition += spaceShipSpeed;
@@ -189,12 +190,9 @@ let gameWindow = {
   //Active session
   renderStartScreen: function() {
     $("#game-window").empty();
-    $("#game-window").append(
-      '<h2 id="startScreen" style="color: white; margin-top: 150px; text-align: center" >Start New Game?</h2>'
-    );
-    $("#game-window").append(
-      '<h4 id="startScreenPressEnter" style="color: white; text-align: center" >Press ENTER to Begin</h4>'
-    );
+    $("#game-window").append('<img id="startScreen" style="display: none"></img>');
+    $("#startScreen").fadeIn(1500);
+    $("#startScreen").attr("src", "startScreen.png");
   },
   renderActiveGame: function() {
     $("#game-window").empty();
@@ -212,23 +210,9 @@ let gameWindow = {
   //Game Over screen
   renderGameOverScreen: function() {
     $("#game-window").empty();
-    $("#game-window").css({ "text-align": "center" });
-
-    $("#game-window").append(
-      '<h2 id="gameOverText" style="color: white; display: none; margin-top: 150px" >Game Over</h2>'
-    );
-    $("#gameOverText").css({ "font-size": "90px" });
-    $("#gameOverText").fadeIn(1500);
-
-    $("#game-window").append(
-      `<h5 id="gameOverScore" style="color: white; display: none">Score: ${score}</h5>`
-    );
-    $("#gameOverScore").fadeIn(1500);
-
-    $("#game-window").append(
-      `<h5 id="spaceToRestart" style="color: white; display: none">Press SPACE to Restart</h5>`
-    );
-    $("#spaceToRestart").fadeIn(1500);
+    $("#game-window").append('<img id="gameOver" style="display: none"></img>');
+    $("#gameOver").attr("src", "gameOver.png");
+    $("#gameOver").fadeIn(1500);
   }
 };
 
